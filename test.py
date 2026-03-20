@@ -1,7 +1,7 @@
 # B'toys Food Fair
 import time
 import sys
-
+import datetime
 appetizers = [
     {'name': 'Vegetable salad', 'price': 99, 'stock': 50},
     {'name': 'French Fries', 'price': 89, 'stock': 50},
@@ -74,7 +74,7 @@ def create_account():
     user_data['email'] = input('Enter your email: ')
     user_data['province'] = input('Enter your province: ')
     user_data['barangay'] = input('Enter your barangay: ')
-    user_data['street'] = input('Enter your streetn: ')
+    user_data['street'] = input('Enter your street: ')
     print("\nYou Succesfully Created Your Account in B'toys Food Fair")
     users.append(user_data)
     login(users)
@@ -155,6 +155,7 @@ def pay():
         if pay.upper() == 'Y':
             try:
                 print('\n---------- PAYMENT ----------')
+                print(f'total is {totalBill}')
                 money = float(input('Enter your money: '))
                 if money < totalBill:
                     print('Insuficient Amount')
@@ -168,7 +169,9 @@ def pay():
                         print('------------')
                         print('------------')
                         print('You succesfully paid your order')
+                        orderTime = datetime.datetime.now()
                         print(f'Thankyou for ordering {user['fullName']}')
+                        print(f'Order time {orderTime}')
                         sys.exit()
 
             except ValueError:
