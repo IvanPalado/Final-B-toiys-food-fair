@@ -44,25 +44,32 @@ currentBill = 0
 totalBill = 0
 
 def login(users):
+    print('\n---------- LOG IN/SIGN UP ----------')
     attempt = 3
-    print("\n---------- Welcome to B'toys Food Fair -----------")
-    print('\nB’TOYS Food Fair is a lively and flavorful event where delicious food, refreshing drinks, and sweet desserts come together.')
-    have_account = input('\nDo you have account? Y or N: ')
-    if have_account.upper() == 'Y':
+    have_account = input("\nDo you want to log in or sign up? (l/s): ").strip()
+    accountFound = False
+    if have_account.upper() == 'L':
         while attempt > 0:
             print('\n---------- LOG IN ----------')
             name = input('Enter name: ')
             password = input('Enter password: ')
             for user in users:
                 if name == user['fullName'] and password == user['password']:
+                    accountFound = True
                     print('Succesfully log in')
                     main()
                 else:
                     attempt -= 1
                     print('Invalid password')
                     print(f'Attempt left {attempt}')
-    else:
+            if not accountFound:
+                print('Account not found! Please Sign Up first')
+                create_account()
+    elif have_account.upper() == 'S':
         create_account()
+    else:
+        print('Invalid Input! Try again')
+        login(users)
 
     
 def create_account():
@@ -75,13 +82,14 @@ def create_account():
     user_data['province'] = input('Enter your province: ')
     user_data['barangay'] = input('Enter your barangay: ')
     user_data['street'] = input('Enter your street: ')
+    print('------------------------------------')
     print("\nYou Succesfully Created Your Account in B'toys Food Fair")
     users.append(user_data)
-    login(users)
+    main()
     return users
     
 def menu():
-   # Display the food menu
+    # Display the food menu
     print("\n========== B'TOYS FOOD MENU ==========")
     print('\n---------- APPETIZER ----------')
     for appetizer in appetizers:
@@ -114,36 +122,40 @@ def menu():
     print('--------------------')
     
 def main():
-    menu()
+    print("\n---------- Welcome to B'toys Food Fair -----------")
+    print('\nB’TOYS  Food  Fair is  a lively and')
+    print('flavorful event where delicious food')
+    print('refreshing drinks, and sweet desserts')
+    print('come together.')
     while True:
-        print('\n---------- FOOD CATEGORY ----------')
-        print('1. Appetizer')
-        print('2. Food')
-        print('3. Drinks')
-        print('4. Dessert')
-        print('5. Show food menu')
+        print('\n---------- CHOICES ----------')
+        print('1. Show food menu')
+        print('2. Appetizer')
+        print('3. Food')
+        print('4. Drinks')
+        print('5. Dessert')
         print('6. Proceed to payment')
-        print('7. Exit')
+        print('7. log out')
 
         try:
-            choice = int(input('Enter category: '))
+            choice = int(input('Enter choice: '))
 
             match choice:
                 case 1:
-                    appetizer_order(appetizers)
+                    menu()
                 case 2:
-                    food_order(foods)
+                    appetizer_order(appetizers)
                 case 3:
-                    drink_order(drinks)
+                    food_order(foods)
                 case 4:
-                    menu()
+                    drink_order(drinks)
                 case 5:
-                    menu()
+                    dessert_order(desserts)
                 case 6:
-                    payment()
+                    mode_of_payment()
                 case 7:
-                    print('\nTerminating the program')
-                    break
+                    print('\nLog out!')
+                    login(users)
         except ValueError:
             print('Invalid value')
 
@@ -179,7 +191,7 @@ def pay():
     except ValueError:
         print('Invalid')
 
-def payment():
+def mode_of_payment():
     global totalBill
     print('\n---------- CHOOSE MOP ----------')
     print('1. Online payment')
@@ -189,20 +201,17 @@ def payment():
 
        match payment_method:
             case 1:
-               online_payment()
+                online_payment()
             case 2:
-               cod()
+                print('Preparing your order')
+                print('Order preparing wait for 5 minutes')
+                time.sleep(5)
+
+                print('Your order is prepared')
+                print('Order will delivered in 5 minutes')
+                sys.exit()
     except ValueError:
         print('Invalid value')
-
-def cod():
-    print('Preparing your order')
-    print('Order preparing wait for 5 minutes')
-    time.sleep(300)
-
-    print('Your order is prepared')
-    print('Order will delivered in 5 minutes')
-    sys.exit()
 
 def online_payment():
     print('\n---------- ONLINE PAYMENT ----------')
@@ -250,7 +259,7 @@ def appetizer_order(appetizers):
         for appetizer in appetizers:
             if appetizer_order.lower() == appetizer['name'].lower():
                 if appetizer['stock'] > 0:
-                    foundAppetizerr = True
+                    foundAppetizer = True
                     quantity = int(input('Enter the quantity: '))
                     appetizer['stock'] - quantity
 
@@ -269,7 +278,7 @@ def appetizer_order(appetizers):
                             if another_order == 1:
                                 main()
                             elif another_order == 2:
-                                payment()
+                                mode_of_payment()
                     except ValueError:
                         print('Invalid value')
         if not foundAppetizer:
@@ -308,7 +317,7 @@ def food_order(foods):
                             if another_order == 1:
                                 main()
                             elif another_order == 2:
-                                payment()
+                                mode_of_payment()
                     except ValueError:
                         print('Invalid value')
         if not foundFood:
@@ -353,7 +362,7 @@ def drink_order(drinks):
                             if another_order == 1:
                                 main()
                             elif another_order == 2:
-                                payment()
+                                mode_of_payment()
                     except ValueError:
                         print('Invalid value')
 
@@ -393,7 +402,7 @@ def dessert_order(desserts):
                             if another_order == 1:
                                 main()
                             elif another_order == 2:
-                                payment()
+                                mode_of_payment()
                     except ValueError:
                         print('Invalid value')
         if not foundDessert:
