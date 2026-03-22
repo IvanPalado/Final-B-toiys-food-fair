@@ -2,6 +2,7 @@
 import time
 import sys
 import datetime
+
 appetizers = [
     {'name': 'Vegetable salad', 'price': 99, 'stock': 50},
     {'name': 'French Fries', 'price': 89, 'stock': 50},
@@ -53,18 +54,24 @@ def login(users):
             print('\n---------- LOG IN ----------')
             name = input('Enter name: ')
             password = input('Enter password: ')
+            #TOdo: FIX THE ERROR MESSAGE FOR INVALID USERNAME AND PASSWORD
             for user in users:
                 if name == user['fullName'] and password == user['password']:
                     accountFound = True
                     print('Succesfully log in')
                     main()
-                else:
+                    if not accountFound:
+                        print('Account not found! Please Sign Up first')
+                        create_account()
+                elif password != user['password'] and name == user['fullName']:
                     attempt -= 1
-                    print('Invalid password')
                     print(f'Attempt left {attempt}')
-            if not accountFound:
-                print('Account not found! Please Sign Up first')
-                create_account()
+                    print('Invalid password')
+                elif name != user['fullName'] and password == user['password']:
+                    attempt -= 1
+                    print(f'Attempt left {attempt}')
+                    print('Invalid Username')
+           
     elif have_account.upper() == 'S':
         create_account()
     else:
@@ -130,10 +137,10 @@ def main():
     while True:
         print('\n---------- CHOICES ----------')
         print('1. Show food menu')
-        print('2. Appetizer')
-        print('3. Food')
-        print('4. Drinks')
-        print('5. Dessert')
+        print('2. Order Appetizer')
+        print('3. Order Food')
+        print('4. Order Drinks')
+        print('5. Order Dessert')
         print('6. Proceed to payment')
         print('7. log out')
 
@@ -156,6 +163,8 @@ def main():
                 case 7:
                     print('\nLog out!')
                     login(users)
+                case _:
+                    print('Invalid Input! Input only 1-7')
         except ValueError:
             print('Invalid value')
 
