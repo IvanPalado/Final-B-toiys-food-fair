@@ -1,8 +1,8 @@
-# B'toys Food Fair
 import time
 import sys
 import datetime
 
+# List of appetizers
 appetizers = [
     {'name': 'Vegetable salad', 'price': 99, 'stock': 50},
     {'name': 'French Fries', 'price': 89, 'stock': 50},
@@ -10,7 +10,7 @@ appetizers = [
     {'name': 'Nachos', 'price': 99, 'stock': 50},
     {'name': 'Soup', 'price': 69, 'stock': 50}
 
-
+# List of main course
 ]
 foods = [
     {'name': 'Chicken Wings', 'price': 169, 'stock': 50},
@@ -20,6 +20,7 @@ foods = [
     {'name': 'Sweet & Sour Por', 'price': 159, 'stock': 50}
 ]
 
+# List of drinks
 drinks = [
     {'name': 'Ice Tea', 'small': 49, 'medium': 59, 'large': 69, 'stock': 50},
     {'name': 'Royal', 'small': 49,'medium': 59, 'large': 59, 'stock': 50},
@@ -29,6 +30,7 @@ drinks = [
 
 ]
 
+# list of desserts
 desserts = [
     {'name': 'Leche Flan', 'price': 99, 'stock': 50},
     {'name': 'Dubai Chewy Cookies', 'price': 95, 'stock': 50},
@@ -50,11 +52,10 @@ def login(users):
     have_account = input("\nDo you want to log in or sign up? (l/s): ").strip()
     accountFound = False
     if have_account.upper() == 'L':
-        while attempt > 0:
+        while attempt > 0: # run until the attempt is equal to 0
             print('\n---------- LOG IN ----------')
             name = input('Enter name: ')
             password = input('Enter password: ')
-            #TOdo: FIX THE ERROR MESSAGE FOR INVALID USERNAME AND PASSWORD
             for user in users:
                 if name == user['fullName'] and password == user['password']:
                     accountFound = True
@@ -80,21 +81,45 @@ def login(users):
 
     
 def create_account():
+    special_characters = [
+        '!', '@', '#', '$', '%', '^', '&', '*',
+        '(', ')', '-', '_', '=', '+', '[', ']',
+        '{', '}', '|', '\\', ':', ';', '"', "'",
+        '<', '>', ',', '.', '?', '/', '`', '~'
+    ]
     user_data = {}
+    
     print('\n---------- CREATE ACCOUNT----------')
     user_data['fullName'] = input('Enter your name: ')
-    user_data['password'] = input('Enter your password: ')
-    user_data['adsress'] = input('Enter your address: ')
+
+    while True:
+        password = input('Enter your password: ')
+
+        if len(password) < 6:
+            print('Password is too short! Try again')
+            continue
+
+        has_special_char = any(ch in special_characters for ch in password)
+        if not has_special_char:
+            print('Password must contain special character! Try again')
+            continue
+
+        user_data['password'] = password
+        break
+
+    user_data['address'] = input('Enter your address: ')
     user_data['email'] = input('Enter your email: ')
     user_data['province'] = input('Enter your province: ')
     user_data['barangay'] = input('Enter your barangay: ')
     user_data['street'] = input('Enter your street: ')
     print('------------------------------------')
-    print("\nYou Succesfully Created Your Account in B'toys Food Fair")
+
+    print('\nAccount Successfully Created')
     users.append(user_data)
-    main()
+    login(users)
     return users
-    
+
+
 def menu():
     # Display the food menu
     print("\n========== B'TOYS FOOD MENU ==========")
