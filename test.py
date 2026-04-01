@@ -107,11 +107,10 @@ def create_account():
         user_data['password'] = password
         break
 
-    user_data['address'] = input('Enter your address: ')
     user_data['email'] = input('Enter your email: ')
-    user_data['province'] = input('Enter your province: ')
-    user_data['barangay'] = input('Enter your barangay: ')
     user_data['street'] = input('Enter your street: ')
+    user_data['barangay'] = input('Enter your barangay: ')
+    user_data['province'] = input('Enter your province: ')
     print('------------------------------------')
 
     print('\nAccount Successfully Created')
@@ -410,7 +409,7 @@ def dessert_order(desserts):
     global totalBill
     foundDessert = False
     print('\n---------- DESSERT ORDER ----------')
-   
+    
     try:
         dessert_order = input('Enter your Food Order: ')
         for dessert in desserts:
