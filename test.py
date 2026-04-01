@@ -40,30 +40,31 @@ desserts = [
 
 ]
 
+# store user accounts
 users = []
 
-
+#Global variables - bills
 currentBill = 0
 totalBill = 0
 
+# login page
 def login(users):
     print('\n---------- LOG IN/SIGN UP ----------')
     attempt = 3
     have_account = input("\nDo you want to log in or sign up? (l/s): ").strip()
-    accountFound = False
+    account_found = False
+
     if have_account.upper() == 'L':
         while attempt > 0: # run until the attempt is equal to 0
             print('\n---------- LOG IN ----------')
             name = input('Enter name: ')
             password = input('Enter password: ')
+
             for user in users:
                 if name == user['fullName'] and password == user['password']:
-                    accountFound = True
+                    account_found = True
                     print('Succesfully log in')
                     main()
-                    if not accountFound:
-                        print('Account not found! Please Sign Up first')
-                        create_account()
                 elif password != user['password'] and name == user['fullName']:
                     attempt -= 1
                     print(f'Attempt left {attempt}')
@@ -71,8 +72,11 @@ def login(users):
                 elif name != user['fullName'] and password == user['password']:
                     attempt -= 1
                     print(f'Attempt left {attempt}')
-                    print('Invalid Username')
-           
+                    print('Invalid Username')       
+            if not account_found:
+                        print('Account not found! Please Sign Up first')
+                        create_account()
+        
     elif have_account.upper() == 'S':
         create_account()
     else:
@@ -90,8 +94,8 @@ def create_account():
     user_data = {}
     
     print('\n---------- CREATE ACCOUNT----------')
+   
     user_data['fullName'] = input('Enter your name: ')
-
     while True:
         password = input('Enter your password: ')
 
@@ -238,7 +242,7 @@ def mode_of_payment():
             case 2:
                 print('Preparing your order')
                 print('Order preparing wait for 5 minutes')
-                time.sleep(5)
+                time.sleep(3)
 
                 print('Your order is prepared')
                 print('Order will delivered in 5 minutes')
@@ -409,7 +413,6 @@ def dessert_order(desserts):
     global totalBill
     foundDessert = False
     print('\n---------- DESSERT ORDER ----------')
-    
     try:
         dessert_order = input('Enter your Food Order: ')
         for dessert in desserts:
@@ -425,7 +428,7 @@ def dessert_order(desserts):
                     print(f'Your current bill is {currentBill} pesos')
 
                     totalBill += currentBill
-                   
+                
                     try: 
                         while True:
                             print('\n1. Another order')
@@ -438,6 +441,7 @@ def dessert_order(desserts):
                                 mode_of_payment()
                     except ValueError:
                         print('Invalid value')
+
         if not foundDessert:
             print('Dessert not found')
     except ValueError:
